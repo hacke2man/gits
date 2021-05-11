@@ -15,7 +15,7 @@ all: ${BINS}
 
 %: src/%.c
 	@echo -n compiling $<
-	@$(cc) -c $< -o build/$@.o
+	@$(cc) $(flags) -c $< -o build/$@.o
 	@echo " done"
 
 clean:
