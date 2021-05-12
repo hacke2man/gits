@@ -10,7 +10,7 @@ LINK = $(BINS:%=build/%.o)
 
 all: ${BINS}
 	@echo -n linking...
-	@$(cc) $(libs) $(flags) $(LINK)
+	@$(cc) $(libs) $(flags) $(LINK) -o gits
 	@echo " done"
 
 %: src/%.c

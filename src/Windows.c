@@ -5,6 +5,7 @@
 
 struct WindowContents * CreateWindowContents(WINDOW * window, char ** command)
 {
+
   struct WindowContents * windowContents = malloc(sizeof(struct WindowContents));
   char * lineString;
   windowContents->window = window;
@@ -12,7 +13,6 @@ struct WindowContents * CreateWindowContents(WINDOW * window, char ** command)
   windowContents->content = ProgToString(command);
   windowContents->line = 0;
   windowContents->endLine = NumLines(windowContents->content);
-  box(windowContents->window, 0, 0);
 
   PrintLineRange(
       windowContents->window,
@@ -20,8 +20,10 @@ struct WindowContents * CreateWindowContents(WINDOW * window, char ** command)
       windowContents->line,
       windowContents->line + windowContents->height
       );
+  box(windowContents->window, 0, 0);
+
+  wrefresh(window);
   refresh();
-  wrefresh(windowContents->window);
 
   return windowContents;
 }
@@ -29,7 +31,7 @@ struct WindowContents * CreateWindowContents(WINDOW * window, char ** command)
 void InspectMode(int input, struct WindowContents * windowContents)
 {
   switch (input) {
-    case 106:
+    case 'j':
       if(windowContents->line + windowContents->height < windowContents->endLine)
         windowContents->line++;
       PrintLineRange(
@@ -39,7 +41,7 @@ void InspectMode(int input, struct WindowContents * windowContents)
           windowContents->line + windowContents->height
           );
       break;
-    case 107:
+    case 'k':
       if(windowContents->line > 0)
         windowContents->line--;
       PrintLineRange(
@@ -50,9 +52,10 @@ void InspectMode(int input, struct WindowContents * windowContents)
           );
       break;
     default:
-      wrefresh(windowContents->window);
       break;
   }
+  box(windowContents->window, 0, 0);
+  wmove(windowContents->window, 0, 0);
 }
 
 void PrintLineRange(WINDOW * window, char * str, unsigned int start, unsigned int end)
@@ -66,7 +69,7 @@ void PrintLineRange(WINDOW * window, char * str, unsigned int start, unsigned in
   char clearstring[x];
   for(int i = 0; i < x; i++)
     clearstring[i] = ' ';
-  clearstring[x-1] = '\0';
+  clearstring[x] = '\0';
 
   char *temp;
   for(int i = 0; i < (end - start); i ++)

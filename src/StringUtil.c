@@ -52,7 +52,7 @@ char * GetLine(char * str)
   return outstring;
 }
 
-char * ProgToString(char * array[3]){
+char * ProgToString(char ** array){
   int pipes[2];
   pipe(pipes);
 
@@ -60,21 +60,21 @@ char * ProgToString(char * array[3]){
     dup2(pipes[1], STDOUT_FILENO);
     close(pipes[0]);
     close(pipes[1]);
-    execvp(array[0], &array[1]);
-    putc('\0', stdout);
+    execvp(array[0], &array[0]);
+    printf("%d", EOF);
     _Exit(0);
   }else{
     wait(0);
     close(pipes[1]);
     FILE *stream = fdopen (pipes[0], "r");
-    char * out = malloc(4000 * sizeof(char));
+    char * out = malloc(8000 * sizeof(char));
     out[0] = '\0';
-    char temp[150];
-    while(fgets(temp, 150, stream))
+    char temp[301];
+    temp[0] = '\0';
+    while(fgets(temp, 300, stream))
     {
         strcat(out, temp);
     }
-
 
     fclose(stream);
     return out;
