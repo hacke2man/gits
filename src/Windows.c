@@ -22,8 +22,8 @@ struct WindowContents * CreateWindowContents(WINDOW * window, char ** command)
       );
   box(windowContents->window, 0, 0);
 
-  wrefresh(window);
   refresh();
+  wrefresh(window);
 
   return windowContents;
 }
@@ -55,7 +55,8 @@ void InspectMode(int input, struct WindowContents * windowContents)
       break;
   }
   box(windowContents->window, 0, 0);
-  wmove(windowContents->window, 0, 0);
+  /* wmove(windowContents->window, 0, 0); */
+  move(LINES/3,COLS);
 }
 
 void PrintLineRange(WINDOW * window, char * str, unsigned int start, unsigned int end)

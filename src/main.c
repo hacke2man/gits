@@ -17,7 +17,7 @@ int main(void)
   initscr();
   raw();
   keypad(stdscr, TRUE);
-  noecho();
+  /* noecho(); */
   /* curs_set(0); */
 
   char cwd[PATH_MAX];
@@ -55,7 +55,10 @@ int main(void)
     switch (mode){
       case INSPECT:
         InspectMode(ch, viewWin);
-        wrefresh(viewWin->window);
+        /* wrefresh(viewWin->window); */
+        wmove(viewWin->window, 0, 0);
+        move(LINES/3,COLS);
+        printw("");
         break;
     }
     refresh();
